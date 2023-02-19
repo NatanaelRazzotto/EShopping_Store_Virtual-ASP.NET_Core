@@ -1,5 +1,6 @@
 using EShopping.ProductApi.Context;
 using Microsoft.EntityFrameworkCore;
+using Pomelo.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
 
