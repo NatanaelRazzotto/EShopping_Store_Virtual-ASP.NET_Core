@@ -21,7 +21,7 @@ namespace EShopping.ProductApi.Context
                 .HasMaxLength(100).
                 IsRequired();
             //product
-            mb.Entity<Product>().Property(c => c.Name)
+            mb.Entity<Category>().Property(c => c.Name)
                  .HasMaxLength(100).
                  IsRequired();
 
