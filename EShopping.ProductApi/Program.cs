@@ -1,4 +1,6 @@
 using EShopping.ProductApi.Context;
+using EShopping.ProductApi.Repositories;
+using EShopping.ProductApi.Services;
 using Microsoft.EntityFrameworkCore;
 using Pomelo.EntityFrameworkCore;
 
@@ -17,6 +19,10 @@ var mySqlConnection = builder.Configuration.GetConnectionString("DefaultConnecti
 builder.Services.AddDbContext<AppDbContext>(options => options.UseMySql(mySqlConnection, ServerVersion.AutoDetect(mySqlConnection)));
 
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICategoryService, CategoryService>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 
