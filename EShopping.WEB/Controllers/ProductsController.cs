@@ -1,0 +1,56 @@
+﻿using EShopping.WEB.Models;
+using EShopping.WEB.Services.Contracts;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+
+namespace EShopping.WEB.Controllers
+{
+    public class ProductsController : Controller
+    {
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
+
+        public ProductsController(IProductService productService, ICategoryService categoryService)
+        {
+            _productService = productService;
+            _categoryService = categoryService;
+        }
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductViewModel>>> Index()
+        {
+            var result = await _productService.GetAllProducts();
+            if (result is null)
+                return NotFound();
+             
+            return View(result);
+        }
+        [HttpGet]
+        public async Task<ActionResult> CreateProduct()
+        {
+            ViewBag.CategoryId = new SelectList(await
+                _categoryService.GetAllCategories(), "CategoryId", "Name");
+
+            return View();
+        }
+        [HttpPost]
+        public async Task<IActionResult> CreateProduct(ProductViewModel productVM)
+        { 
+            if (ModelState.IsValid)
+            {
+                var result = await _productService.CreateProduct(productVM);
+                if (result != null)
+                {
+                    return RedirectToAction(nameof(Index));
+                }         
+            }
+            else
+            {
+                ViewBag.CategoryId = new SelectList(await
+              _categoryService.GetAllCategories(), "CategoryId", "Name");
+            }
+            return View(productVM);
+        }
+
+
+    }
+}

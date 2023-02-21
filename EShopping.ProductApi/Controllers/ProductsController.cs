@@ -41,13 +41,20 @@ namespace EShopping.ProductApi.Controllers
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] ProductDTO productDTO)
         {
-            if (productDTO == null)
+            try
             {
-                return BadRequest();
-            }
+                if (productDTO == null)
+                {
+                    return BadRequest();
+                }
 
-            await _productService.AddProduct(productDTO);
-            return new CreatedAtRouteResult("GetProduct", new { id = productDTO.Id }, productDTO);
+                await _productService.AddProduct(productDTO);
+                return new CreatedAtRouteResult("GetProduct", new { id = productDTO.Id }, productDTO);
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
         [HttpPut("{id:int}")]
         public async Task<ActionResult> Put(int id, [FromBody] ProductDTO categoryDTO)
